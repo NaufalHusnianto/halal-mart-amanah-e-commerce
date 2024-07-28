@@ -6,10 +6,8 @@ import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { NextUIProvider } from "@nextui-org/react";
 
-const appName = import.meta.env.VITE_APP_NAME || "Laravel";
-
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => `${title} - Halal Mart Amanah`,
     resolve: (name) =>
         resolvePageComponent(
             `./Pages/${name}.jsx`,

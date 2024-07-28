@@ -1,7 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import React from "react";
-import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
+import { Button, Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 
 export default function Dashboard({ auth, products }) {
     return (
@@ -36,17 +36,33 @@ export default function Dashboard({ auth, products }) {
                             </CardBody>
                             <CardFooter className="text-small flex-col items-start">
                                 <div className="flex justify-between w-full">
-                                    <b>{product.name}</b>
+                                    <p className="font-bold text-md">
+                                        {product.name}
+                                    </p>
                                     <p className="text-default-500">
-                                        {product.price}
+                                        Rp.{product.price},-
                                     </p>
                                 </div>
-                                <p className="mt-2 text-default-500">
-                                    {product.description}
-                                </p>
-                                <p className="text-default-500">
-                                    Stock: {product.stock}
-                                </p>
+                                <div className="flex justify-between items-center w-full mt-2">
+                                    <div>
+                                        <p className="text-default-500 text-start">
+                                            {product.description}
+                                        </p>
+                                        <p className="text-default-500 text-start">
+                                            Stock:
+                                            <span className="text-foreground font-extralight mx-1">
+                                                {product.stock}
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <Button
+                                        variant="solid"
+                                        color="primary"
+                                        size="sm"
+                                    >
+                                        + Keranjang
+                                    </Button>
+                                </div>
                             </CardFooter>
                         </Card>
                     ))}
