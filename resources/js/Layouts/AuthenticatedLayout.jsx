@@ -35,50 +35,6 @@ export default function Authenticated({ user, header, children }) {
                             </div>
                         </div>
 
-                        <div className="w-full flex justify-center items-center gap-4">
-                            <Dropdown>
-                                <Dropdown.Trigger>
-                                    <span className="inline-flex rounded-md hover:bg-content1 p-2 cursor-pointer">
-                                        Kategori
-                                    </span>
-                                </Dropdown.Trigger>
-
-                                <Dropdown.Content>
-                                    <Dropdown.Link href={route("profile.edit")}>
-                                        Accessories
-                                    </Dropdown.Link>
-                                    <Dropdown.Link href="/admin">
-                                        HNI Product
-                                    </Dropdown.Link>
-                                    <Dropdown.Link
-                                        href={route("logout")}
-                                        method="post"
-                                        as="button"
-                                    >
-                                        Elektronik
-                                    </Dropdown.Link>
-                                    <Dropdown.Link
-                                        href={route("logout")}
-                                        method="post"
-                                        as="button"
-                                    >
-                                        Elektronik
-                                    </Dropdown.Link>
-                                    <Dropdown.Link
-                                        href={route("logout")}
-                                        method="post"
-                                        as="button"
-                                    >
-                                        Elektronik
-                                    </Dropdown.Link>
-                                </Dropdown.Content>
-                            </Dropdown>
-                            <TextInput
-                                className="w-1/2 text-gray-500 bg-background h-2/3"
-                                placeholder="Cari Produk"
-                            />
-                        </div>
-
                         <div className="hidden sm:flex sm:items-center sm:ms-6 gap-4">
                             <Link
                                 href="/chat"

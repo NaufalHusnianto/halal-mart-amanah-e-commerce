@@ -12,7 +12,7 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         return Inertia::render('Dashboard', [
             'products' => Product::all(),
@@ -38,9 +38,11 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(Product $product): Response
     {
-        //
+        return Inertia::render('ProductDetail', [
+            'product' => $product,
+        ]);
     }
 
     /**
@@ -65,5 +67,16 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+    
+        $products = Product::where('name', 'LIKE', "%$query%")
+            ->orWhere('description', 'LIKE', "%$query%")
+            ->get();
+            
+        return response()->json($products);
     }
 }
