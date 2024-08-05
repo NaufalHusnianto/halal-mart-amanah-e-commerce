@@ -15,10 +15,8 @@ export default function Dashboard({ auth, products }) {
                 params: { query: query },
             });
 
-            // Cek format data
-            console.log("Data fetched:", response.data);
+            // console.log("Data fetched:", response.data);
 
-            // Jika respons adalah array
             setFilteredProducts(
                 Array.isArray(response.data) ? response.data : []
             );
@@ -28,11 +26,11 @@ export default function Dashboard({ auth, products }) {
     };
 
     return (
-        <Authenticated auth={auth}>
+        <Authenticated user={auth.user}>
             <Head title="Dashboard" />
 
-            <div className="pt-24 pb-12 sm:px-12 px-3">
-                <div className="flex justify-center items-center mb-6 gap-4">
+            <div className="py-24 sm:px-12 px-3">
+                <div className="flex justify-center items-center mb-8 gap-4">
                     <TextInput
                         type="text"
                         placeholder="Cari Produk"
@@ -102,7 +100,7 @@ export default function Dashboard({ auth, products }) {
                             </Card>
                         ))
                     ) : (
-                        <p>No products found.</p>
+                        <p className="p-5">No products found.</p>
                     )}
                 </div>
             </div>

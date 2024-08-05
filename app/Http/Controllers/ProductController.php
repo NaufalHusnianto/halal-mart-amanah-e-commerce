@@ -12,7 +12,7 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): Response
+    public function index(): Response
     {
         return Inertia::render('Dashboard', [
             'products' => Product::all(),

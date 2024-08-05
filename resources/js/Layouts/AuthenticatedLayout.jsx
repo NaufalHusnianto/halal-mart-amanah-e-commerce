@@ -11,6 +11,7 @@ export default function Authenticated({ user, header, children }) {
         useState(false);
 
     const [isInvisible, setIsInvisible] = useState(false);
+
     useEffect(() => {
         if (user) {
             setIsInvisible(false);
@@ -93,7 +94,10 @@ export default function Authenticated({ user, header, children }) {
                                                 >
                                                     {user.name}
                                                     <Avatar
-                                                        src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+                                                        src={
+                                                            "/storage/" +
+                                                            user.profile_photo
+                                                        }
                                                         className=""
                                                     />
                                                 </button>

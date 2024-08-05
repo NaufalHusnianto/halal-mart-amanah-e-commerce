@@ -12,16 +12,28 @@ export default function UpdateProfileInformation({
 }) {
     const user = usePage().props.auth.user;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } =
+    const { data, setData, post, errors, processing, recentlySuccessful } =
         useForm({
             name: user.name,
             email: user.email,
+            profile_photo: null,
         });
 
     const submit = (e) => {
         e.preventDefault();
 
-        patch(route("profile.update"));
+        // Create a new FormData object
+        const formData = new FormData();
+        formData.append("name", data.name);
+        formData.append("email", data.email);
+        formData.append("profile_photo", data.profile_photo);
+
+        // Use the Inertia `post` method instead of `patch` for file uploads
+        post(route("profile.update"), formData, {
+            headers: {
+                "Content-Type": "multipart/form-data", // Important for file uploads
+            },
+        });
     };
 
     return (
@@ -67,6 +79,24 @@ export default function UpdateProfileInformation({
                     />
 
                     <InputError className="mt-2" message={errors.email} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="profile_photo" value="Profile Photo" />
+
+                    <input
+                        id="profile_photo"
+                        type="file"
+                        className="mt-1 block w-full text-gray-500"
+                        onChange={(e) =>
+                            setData("profile_photo", e.target.files[0])
+                        }
+                    />
+
+                    <InputError
+                        className="mt-2"
+                        message={errors.profile_photo}
+                    />
                 </div>
 
                 {mustVerifyEmail && user.email_verified_at === null && (
