@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -14,11 +14,9 @@ Route::get('/', [ProductController::class, 'index'])->name('dashboard');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/search', [ProductController::class, 'search'])->name('products.search');
 
-Route::get('/cart', function () {
-    return Inertia::render('Cart', [
-        'products' => Product::all(),
-    ]);
-})->name('cart');
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add')->middleware('auth');
+Route::get('/cart', [CartController::class, 'getCart'])->middleware('auth');
+Route::get('/cart/item-count', [CartController::class, 'getCartItemCount'])->name('cart.itemCount');
 
 Route::get('/chat', function () {
     return Inertia::render('Chat');

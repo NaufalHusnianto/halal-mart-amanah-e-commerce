@@ -9,6 +9,7 @@ import TextInput from "@/Components/TextInput";
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
+    const [cartItemCount, setCartItemCount] = useState(0);
 
     const [isInvisible, setIsInvisible] = useState(false);
 
@@ -17,6 +18,19 @@ export default function Authenticated({ user, header, children }) {
             setIsInvisible(false);
         } else {
             setIsInvisible(true);
+        }
+    }, [user]);
+
+    useEffect(() => {
+        if (user) {
+            axios
+                .get(route("cart.itemCount"))
+                .then((response) => {
+                    setCartItemCount(response.data.itemCount);
+                })
+                .catch((error) => {
+                    console.error("Error fetching cart item count:", error);
+                });
         }
     }, [user]);
 
@@ -67,9 +81,9 @@ export default function Authenticated({ user, header, children }) {
                                 className="flex justify-center hover:opacity-50 transition-opacity ease-in-out"
                             >
                                 <Badge
-                                    content="1"
+                                    content={cartItemCount}
                                     color="primary"
-                                    isInvisible={isInvisible}
+                                    isInvisible={!user || cartItemCount === 0}
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -93,13 +107,19 @@ export default function Authenticated({ user, header, children }) {
                                                     className="inline-flex gap-2 items-center px-3 py-2 text-sm leading-4 font-medium rounded-md text-primary-foreground hover:opacity-50 transition-opacity outline-none ease-in-out duration-150"
                                                 >
                                                     {user.name}
-                                                    <Avatar
-                                                        src={
-                                                            "/storage/" +
-                                                            user.profile_photo
-                                                        }
-                                                        className=""
-                                                    />
+                                                    {user.profile_photo ? (
+                                                        <Avatar
+                                                            src={
+                                                                "/storage/" +
+                                                                user.profile_photo
+                                                            }
+                                                        />
+                                                    ) : (
+                                                        <Avatar
+                                                            showFallback
+                                                            src="https://images.unsplash.com/broken"
+                                                        />
+                                                    )}
                                                 </button>
                                             ) : (
                                                 <Link href="/login">

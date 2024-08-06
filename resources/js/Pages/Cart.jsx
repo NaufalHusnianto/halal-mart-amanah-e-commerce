@@ -1,5 +1,5 @@
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
 import {
     Table,
     TableHeader,
@@ -11,10 +11,46 @@ import {
     Checkbox,
     Button,
 } from "@nextui-org/react";
+import React, { useState, useEffect } from "react";
 
-import React from "react";
+const Cart = ({ auth }) => {
+    const { cart } = usePage().props;
+    const cartItems = cart ? cart.items : [];
 
-const Cart = ({ auth, products }) => {
+    const [checkedItems, setCheckedItems] = useState({});
+    const [selectAll, setSelectAll] = useState(false);
+
+    useEffect(() => {
+        const initialCheckedState = cartItems.reduce((acc, item) => {
+            acc[item.id] = false;
+            return acc;
+        }, {});
+        setCheckedItems(initialCheckedState);
+    }, [cartItems]);
+
+    const handleCheckboxChange = (itemId) => {
+        setCheckedItems((prevState) => ({
+            ...prevState,
+            [itemId]: !prevState[itemId],
+        }));
+    };
+
+    const handleSelectAll = () => {
+        setSelectAll(!selectAll);
+        const newCheckedState = cartItems.reduce((acc, item) => {
+            acc[item.id] = !selectAll;
+            return acc;
+        }, {});
+        setCheckedItems(newCheckedState);
+    };
+
+    const totalHarga = cartItems.reduce((total, item) => {
+        if (checkedItems[item.id]) {
+            return total + item.product.price * item.quantity;
+        }
+        return total;
+    }, 0);
+
     return (
         <Authenticated user={auth.user}>
             <Head title="Cart" />
@@ -28,21 +64,32 @@ const Cart = ({ auth, products }) => {
                     >
                         <TableHeader>
                             <TableColumn>
-                                <Checkbox>Pilih Semua</Checkbox>
+                                <Checkbox
+                                    isChecked={selectAll}
+                                    onChange={handleSelectAll}
+                                >
+                                    Pilih Semua
+                                </Checkbox>
                             </TableColumn>
                             <TableColumn></TableColumn>
                             <TableColumn>JUMLAH</TableColumn>
-                            <TableColumn></TableColumn>
+                            <TableColumn>HARGA</TableColumn>
                         </TableHeader>
                         <TableBody emptyContent={"No rows to display."}>
-                            {products.map((product, index) => (
+                            {cartItems.map((item, index) => (
                                 <TableRow key={index}>
                                     <TableCell>
-                                        <Checkbox className="gap-4">
+                                        <Checkbox
+                                            isChecked={checkedItems[item.id]}
+                                            onChange={() =>
+                                                handleCheckboxChange(item.id)
+                                            }
+                                            className="gap-4"
+                                        >
                                             <div className="flex flex-col">
-                                                <p>{product.name}</p>
+                                                <p>{item.product.name}</p>
                                                 <p className="text-gray-500">
-                                                    {product.description}
+                                                    {item.product.description}
                                                 </p>
                                             </div>
                                         </Checkbox>
@@ -52,13 +99,15 @@ const Cart = ({ auth, products }) => {
                                             shadow="sm"
                                             radius="lg"
                                             width="100%"
-                                            alt={product.name}
+                                            alt={item.product.name}
                                             className="w-full object-cover h-[50px]"
-                                            src={"/storage/" + product.image}
+                                            src={
+                                                "/storage/" + item.product.image
+                                            }
                                         />
                                     </TableCell>
-                                    <TableCell>{product.stock}</TableCell>
-                                    <TableCell>{product.price}</TableCell>
+                                    <TableCell>{item.quantity}</TableCell>
+                                    <TableCell>{item.product.price}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -70,7 +119,7 @@ const Cart = ({ auth, products }) => {
                             </h3>
                             <div className="flex justify-between mt-4">
                                 <p>Total Harga :</p>
-                                <p>Rp.10.000,-</p>
+                                <p>Rp.{totalHarga},-</p>
                             </div>
                         </div>
 

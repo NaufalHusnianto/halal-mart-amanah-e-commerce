@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Head } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 import { Button, Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import axios from "axios";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
@@ -8,6 +8,10 @@ import TextInput from "@/Components/TextInput";
 export default function Dashboard({ auth, products }) {
     const [query, setQuery] = useState("");
     const [filteredProducts, setFilteredProducts] = useState(products);
+    const { data, setData, post, reset, errors } = useForm({
+        product_id: "",
+        quantity: 1,
+    });
 
     const handleSearch = async () => {
         try {
@@ -25,6 +29,27 @@ export default function Dashboard({ auth, products }) {
         }
     };
 
+    const addToCart = (product_id) => {
+        setData("product_id", product_id);
+    };
+
+    useEffect(() => {
+        if (data.product_id) {
+            console.log(data);
+            post(route("cart.add"), {
+                onSuccess: () => console.log("success"),
+                onError: (errors) => console.error("error", errors),
+                onFinish: () => console.log("request finished"),
+            });
+        }
+    }, [data.product_id]);
+
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter") {
+            handleSearch();
+        }
+    };
+
     return (
         <Authenticated user={auth.user}>
             <Head title="Dashboard" />
@@ -36,6 +61,7 @@ export default function Dashboard({ auth, products }) {
                         placeholder="Cari Produk"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
+                        onKeyPress={handleKeyPress}
                         className="w-1/2 text-gray-500 bg-background h-2/3 px-4 py-2 rounded"
                     />
                     <Button
@@ -91,6 +117,12 @@ export default function Dashboard({ auth, products }) {
                                                 variant="solid"
                                                 color="primary"
                                                 size="sm"
+                                                onClick={() =>
+                                                    addToCart(product.id)
+                                                }
+                                                onTouchMove={() => {
+                                                    console.log("focus");
+                                                }}
                                             >
                                                 + Keranjang
                                             </Button>
