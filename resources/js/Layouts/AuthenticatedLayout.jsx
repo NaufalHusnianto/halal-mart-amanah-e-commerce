@@ -36,7 +36,7 @@ export default function Authenticated({ user, header, children }) {
 
     return (
         <div className="min-h-screen">
-            <nav className="bg-background fixed z-50 w-full">
+            <nav className="bg-background bg-opacity-50 fixed z-50 w-full">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">
@@ -201,7 +201,7 @@ export default function Authenticated({ user, header, children }) {
                 <div
                     className={
                         (showingNavigationDropdown ? "block" : "hidden") +
-                        " sm:hidden"
+                        " sm:hidden bg-background"
                     }
                 >
                     <div className="pt-2 pb-3 space-y-1">

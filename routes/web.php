@@ -17,6 +17,7 @@ Route::get('/search', [ProductController::class, 'search'])->name('products.sear
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add')->middleware('auth');
 Route::get('/cart', [CartController::class, 'getCart'])->middleware('auth');
 Route::get('/cart/item-count', [CartController::class, 'getCartItemCount'])->name('cart.itemCount');
+Route::delete('/cart/remove-item', [CartController::class, 'removeFromCart'])->name('cart.removeItem')->middleware('auth');
 
 Route::get('/chat', function () {
     return Inertia::render('Chat');

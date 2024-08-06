@@ -55,4 +55,21 @@ class CartController extends Controller
 
         return response()->json(['itemCount' => $itemCount]);
     }
+
+    public function removeFromCart(Request $request)
+    {
+        $request->validate([
+            'cart_item_id' => 'required|exists:cart_items,id',
+        ]);
+
+        $user = Auth::user();
+        $cart = Cart::where('user_id', $user->id)->first();
+
+        if($cart) {
+            $cartItem = $cart->items()->where('id', $request->cart_item_id)->first();
+            if($cartItem) {
+                $cartItem->delete();
+            }
+        }
+    }
 }

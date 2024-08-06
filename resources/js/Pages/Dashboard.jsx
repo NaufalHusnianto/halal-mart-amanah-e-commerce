@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { Head, useForm } from "@inertiajs/react";
-import { Button, Card, CardBody, CardFooter, Image } from "@nextui-org/react";
+import {
+    Button,
+    Card,
+    CardBody,
+    CardFooter,
+    Image,
+    Pagination,
+} from "@nextui-org/react";
 import axios from "axios";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import TextInput from "@/Components/TextInput";
@@ -13,6 +20,9 @@ export default function Dashboard({ auth, products }) {
         quantity: 1,
     });
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [productsPerPage] = useState(8);
+
     const handleSearch = async () => {
         try {
             const response = await axios.get("/search", {
@@ -24,6 +34,7 @@ export default function Dashboard({ auth, products }) {
             setFilteredProducts(
                 Array.isArray(response.data) ? response.data : []
             );
+            setCurrentPage(1);
         } catch (error) {
             console.error("Error fetching products:", error);
         }
@@ -50,6 +61,15 @@ export default function Dashboard({ auth, products }) {
         }
     };
 
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = filteredProducts.slice(
+        indexOfFirstProduct,
+        indexOfLastProduct
+    );
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
     return (
         <Authenticated user={auth.user}>
             <Head title="Dashboard" />
@@ -75,8 +95,8 @@ export default function Dashboard({ auth, products }) {
                 </div>
 
                 <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
-                    {filteredProducts.length > 0 ? (
-                        filteredProducts.map((product, index) => (
+                    {currentProducts.length > 0 ? (
+                        currentProducts.map((product, index) => (
                             <Card
                                 shadow="sm"
                                 key={index}
@@ -120,9 +140,6 @@ export default function Dashboard({ auth, products }) {
                                                 onClick={() =>
                                                     addToCart(product.id)
                                                 }
-                                                onTouchMove={() => {
-                                                    console.log("focus");
-                                                }}
                                             >
                                                 + Keranjang
                                             </Button>
@@ -134,6 +151,18 @@ export default function Dashboard({ auth, products }) {
                     ) : (
                         <p className="p-5">No products found.</p>
                     )}
+                </div>
+
+                {/* Pagination */}
+                <div className="flex justify-center mt-12">
+                    <Pagination
+                        total={Math.ceil(
+                            filteredProducts.length / productsPerPage
+                        )}
+                        initialPage={currentPage}
+                        onChange={(page) => paginate(page)}
+                        showControls
+                    />
                 </div>
             </div>
         </Authenticated>

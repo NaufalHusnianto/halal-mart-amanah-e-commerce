@@ -19,6 +19,7 @@ const Cart = ({ auth }) => {
 
     const [checkedItems, setCheckedItems] = useState({});
     const [selectAll, setSelectAll] = useState(false);
+    const [items, setItems] = useState(cart.items);
 
     useEffect(() => {
         const initialCheckedState = cartItems.reduce((acc, item) => {
@@ -51,6 +52,20 @@ const Cart = ({ auth }) => {
         return total;
     }, 0);
 
+    const handleRemoveItem = (cartItemId) => {
+        axios
+            .delete(route("cart.removeItem"), {
+                data: { cart_item_id: cartItemId },
+            })
+            .then((response) => {
+                setItems(items.filter((item) => item.id !== cartItemId));
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error("Error removing item from cart:", error);
+            });
+    };
+
     return (
         <Authenticated user={auth.user}>
             <Head title="Cart" />
@@ -74,6 +89,7 @@ const Cart = ({ auth }) => {
                             <TableColumn></TableColumn>
                             <TableColumn>JUMLAH</TableColumn>
                             <TableColumn>HARGA</TableColumn>
+                            <TableColumn></TableColumn>
                         </TableHeader>
                         <TableBody emptyContent={"No rows to display."}>
                             {cartItems.map((item, index) => (
@@ -108,6 +124,18 @@ const Cart = ({ auth }) => {
                                     </TableCell>
                                     <TableCell>{item.quantity}</TableCell>
                                     <TableCell>{item.product.price}</TableCell>
+                                    <TableCell>
+                                        <Button
+                                            color="danger"
+                                            variant="solid"
+                                            size="sm"
+                                            onClick={() =>
+                                                handleRemoveItem(item.id)
+                                            }
+                                        >
+                                            Remove
+                                        </Button>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
