@@ -1,5 +1,5 @@
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { Head, usePage } from "@inertiajs/react";
+import { Head, router, useForm, usePage } from "@inertiajs/react";
 import {
     Table,
     TableHeader,
@@ -20,6 +20,8 @@ const Cart = ({ auth }) => {
     const [checkedItems, setCheckedItems] = useState({});
     const [selectAll, setSelectAll] = useState(false);
     const [items, setItems] = useState(cart.items);
+
+    const { post } = useForm();
 
     useEffect(() => {
         const initialCheckedState = cartItems.reduce((acc, item) => {
@@ -64,6 +66,18 @@ const Cart = ({ auth }) => {
             .catch((error) => {
                 console.error("Error removing item from cart:", error);
             });
+    };
+
+    const handleCheckout = () => {
+        const selectedItems = cartItems.filter((item) => checkedItems[item.id]);
+
+        if (selectedItems.length > 0) {
+            router.post(route("checkout"), {
+                selectedItems: selectedItems,
+            });
+        } else {
+            alert("No items selected for checkout.");
+        }
     };
 
     return (
@@ -151,7 +165,11 @@ const Cart = ({ auth }) => {
                             </div>
                         </div>
 
-                        <Button variant="solid" color="primary">
+                        <Button
+                            variant="solid"
+                            color="primary"
+                            onClick={handleCheckout}
+                        >
                             Checkout
                         </Button>
                     </div>

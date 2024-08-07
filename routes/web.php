@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -18,6 +20,10 @@ Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add')
 Route::get('/cart', [CartController::class, 'getCart'])->middleware('auth');
 Route::get('/cart/item-count', [CartController::class, 'getCartItemCount'])->name('cart.itemCount');
 Route::delete('/cart/remove-item', [CartController::class, 'removeFromCart'])->name('cart.removeItem')->middleware('auth');
+Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+Route::post('/checkout/purchase', [CheckoutController::class, 'purchase'])->name('checkout.purchase');
+
+Route::get('/history', [TransactionController::class, 'index'])->name('transaction.history')->middleware('auth');
 
 Route::get('/chat', function () {
     return Inertia::render('Chat');

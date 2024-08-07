@@ -140,11 +140,16 @@ export default function Authenticated({ user, header, children }) {
                                         >
                                             Profile
                                         </Dropdown.Link>
-                                        {user.name === "Admin" && (
+                                        {user && user.name === "Admin" && (
                                             <Dropdown.Link href="/admin">
                                                 Jual Produk
                                             </Dropdown.Link>
                                         )}
+                                        <Dropdown.Link
+                                            href={route("transaction.history")}
+                                        >
+                                            Transaksi
+                                        </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route("logout")}
                                             method="post"
