@@ -19,7 +19,9 @@
         "vite": "^5.0"
     },
     "dependencies": {
+        "@headlessui/react": "^2.1.2",
         "@nextui-org/react": "^2.4.6",
+        "@react-google-maps/api": "^2.19.3",
         "framer-motion": "^11.3.17"
     }
 }

@@ -108,7 +108,7 @@ const Checkout = ({ auth }) => {
                             </div>
                             <div className="mt-4">
                                 <label htmlFor="shipping_address">
-                                    Alamat Pengiriman:
+                                    Alamat Pengiriman (link google maps):
                                 </label>
                                 <textarea
                                     id="shipping_address"
@@ -117,7 +117,7 @@ const Checkout = ({ auth }) => {
                                     onChange={handleInputChange}
                                 />
                             </div>
-                            <div className="mt-4">
+                            <div className="my-4">
                                 <label htmlFor="payment_invoice">
                                     Upload Bukti Pembayaran:
                                 </label>

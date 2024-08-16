@@ -8,40 +8,8 @@ const Chat = ({ auth }) => {
         <Authenticated user={auth.user}>
             <Head title="Chat" />
 
-            <div className="pt-24 pb-12 px-12 grid grid-cols-3 gap-4">
-                <div className="bg-content1 rounded-2xl p-5">
-                    <h4 className="font-semibold">Kotak Masuk</h4>
-                    <div className="flex flex-col gap-2 rounded-2xl mt-4">
-                        <div className="p-2 bg-content2 rounded-2xl flex gap-4 items-center">
-                            <Badge content="1" color="primary">
-                                <Avatar
-                                    src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                                    className=""
-                                />
-                            </Badge>
-                            <p>Toko Jaya Abadi</p>
-                        </div>
-                        <div className="p-2 bg-content2 rounded-2xl flex gap-4 items-center">
-                            <Badge content="1" color="primary">
-                                <Avatar
-                                    src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                                    className=""
-                                />
-                            </Badge>
-                            <p>Toko Lampu Permata</p>
-                        </div>
-                        <div className="p-2 bg-content2 rounded-2xl flex gap-4 items-center">
-                            <Badge content="5" color="primary">
-                                <Avatar
-                                    src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                                    className=""
-                                />
-                            </Badge>
-                            <p>Toko Indah Palace</p>
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-content1 rounded-2xl col-span-2 min-h-96">
+            <div className="pt-24 pb-12 px-12 flex justify-center items-center">
+                <div className="bg-content1 rounded-2xl col-span-2 min-h-96 w-full max-w-4xl">
                     <div className="w-full bg-content2 rounded-xl py-2 px-4 flex items-center gap-3">
                         <Avatar
                             src="https://i.pravatar.cc/150?u=a042581f4e29026024d"

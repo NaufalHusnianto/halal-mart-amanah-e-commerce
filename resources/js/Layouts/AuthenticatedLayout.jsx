@@ -36,7 +36,7 @@ export default function Authenticated({ user, header, children }) {
 
     return (
         <div className="min-h-screen">
-            <nav className="bg-background bg-opacity-50 fixed z-50 w-full">
+            <nav className="bg-background bg-opacity-80 fixed z-50 w-full border-b-1 border-b-foreground-400">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">
@@ -142,7 +142,7 @@ export default function Authenticated({ user, header, children }) {
                                         </Dropdown.Link>
                                         {user && user.name === "Admin" && (
                                             <Dropdown.Link href="/admin">
-                                                Jual Produk
+                                                Admin Panel
                                             </Dropdown.Link>
                                         )}
                                         <Dropdown.Link
